@@ -35,7 +35,9 @@ def get_price_from_slot0(pool_address):
 def monitor():
     price_eth = get_price_from_slot0(KRS_ETH_POOL)
     price_usdc = get_price_from_slot0(KRS_USDC_POOL)
-
+################ DEBUG
+    print(f"DEBUG: price_eth={price_eth}, price_usdc={price_usdc}")
+##################
     eth_usd = 2500  # zakładany kurs
     usd_pln = 4
 
