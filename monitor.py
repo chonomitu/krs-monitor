@@ -18,6 +18,5 @@ def monitor():
     send_telegram_alert("Test: KRS monitor działa poprawnie!")
 
 if __name__ == "__main__":
-    while True:
-        monitor()
-        time.sleep(300)  # co 5 minut
+    monitor()
+
