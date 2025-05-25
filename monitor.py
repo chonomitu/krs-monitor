@@ -91,7 +91,7 @@ for name, (tokenB, should_invert) in TOKEN_BS.items():
         print(f"↪ obliczony kurs ≈ {price:.8f}")
         print(f"↪ kurs RAW = {raw_price}")
         print(f"↪ odwrócony kurs = {invert(price)}")
-        output[name] = round(price, 4)
+        output[name] = round(price, 8)
     else:
         print(f"❌ Nie znaleziono puli dla {name}.")
         output[name] = 0
