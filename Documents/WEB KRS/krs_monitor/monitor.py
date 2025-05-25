@@ -71,6 +71,5 @@ def monitor():
         print(e)
 
 if __name__ == "__main__":
-    while True:
-        monitor()
-        time.sleep(300)
+    monitor()
+
