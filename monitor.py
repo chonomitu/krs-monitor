@@ -85,14 +85,14 @@ for name, (tokenB, should_invert) in TOKEN_BS.items():
     pool_address = get_pool(TOKEN_A, tokenB)
     if pool_address:
         print(f"✅ Adres puli KRS / {name}: {pool_address}")
-        price, sqrt_price = read_slot0(pool_address, invert_result=should_invert)
+        price, sqrt_price = read_slot0(pool_address)
         raw_price = (sqrt_price ** 2) / (2 ** 192) if sqrt_price != 0 else 0
         print(f"↪ sqrtPriceX96 = {sqrt_price}")
         print(f"↪ obliczony kurs ≈ {price:.8f}")
         print(f"↪ kurs RAW = {raw_price}")
-        print(f"↪ odwrócony kurs = {invert(price)}")
+        
         if name == "WETH":
-            output[name] = round(invert(raw_price) * 10**-8, 6)
+            output[name] = round(invert(raw_price) * 10**-8, 8)
         elif name == "USDC":
             output[name] = round(raw_price * 10**12, 8)
         else:
