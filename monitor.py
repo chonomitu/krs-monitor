@@ -6,7 +6,7 @@ from web3 import Web3
 TOKEN_A = "0x521e58970fBa0AEAF6DC9C2e994ec9e9CD71A070"  # KRS
 TOKEN_BS = {
     "WETH": ("0x82af49447d8a07e3bd95bd0d56f35241523fbab1", False),
-    "USDC": ("0xaf88d065e77c8cC2239327C5EDb3A432268e5831", False)
+    "USDC": ("0xaf88d065e77c8cC2239327C5EDb3A432268e5831", True)
 }
 FEE = 3000
 RPC_URL = "https://arb-mainnet.g.alchemy.com/v2/Nj4G5fjazRLiSREiRTES8oG5b3HMznyx"
@@ -91,7 +91,7 @@ for name, (tokenB, should_invert) in TOKEN_BS.items():
         print(f"↪ obliczony kurs ≈ {price:.8f}")
         print(f"↪ kurs RAW = {raw_price}")
         print(f"↪ odwrócony kurs = {invert(price)}")
-        output[name] = round(price, 8)
+        output[name] = round(price * 10**12, 4)
     else:
         print(f"❌ Nie znaleziono puli dla {name}.")
         output[name] = 0
