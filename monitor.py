@@ -78,18 +78,28 @@ def read_slot0(pool_address, invert_result=False):
 
 output = {}
 
-print("\n🔍 Trwa pobieranie kursów KRS...")
+DEBUG = False
+
+if DEBUG:
+    print("
+🔍 Trwa pobieranie kursów KRS...")
 
 for name, (tokenB, should_invert) in TOKEN_BS.items():
-    print(f"\n🔍 Szukam puli KRS / {name}...")
+        if DEBUG:
+        print(f"
+🔍 Szukam puli KRS / {name}...")
     pool_address = get_pool(TOKEN_A, tokenB)
     if pool_address:
-        print(f"✅ Adres puli KRS / {name}: {pool_address}")
+                if DEBUG:
+            print(f"✅ Adres puli KRS / {name}: {pool_address}")
         price, sqrt_price = read_slot0(pool_address)
         raw_price = (sqrt_price ** 2) / (2 ** 192) if sqrt_price != 0 else 0
-        print(f"↪ sqrtPriceX96 = {sqrt_price}")
-        print(f"↪ obliczony kurs ≈ {price:.8f}")
-        print(f"↪ kurs RAW = {raw_price}")
+                if DEBUG:
+            print(f"↪ sqrtPriceX96 = {sqrt_price}")
+                if DEBUG:
+            print(f"↪ obliczony kurs ≈ {price:.8f}")
+                if DEBUG:
+            print(f"↪ kurs RAW = {raw_price}")
         
         if name == "WETH":
             output[name] = round(invert(raw_price) * 10**-8, 8)
@@ -98,7 +108,8 @@ for name, (tokenB, should_invert) in TOKEN_BS.items():
         else:
             output[name] = round(price, 4)
     else:
-        print(f"❌ Nie znaleziono puli dla {name}.")
+                if DEBUG:
+            print(f"❌ Nie znaleziono puli dla {name}.")
         output[name] = 0
 
 # Zapis do pliku JSON
