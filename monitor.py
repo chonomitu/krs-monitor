@@ -45,7 +45,6 @@ POOL_ABI = [{
 
 w3 = Web3(Web3.HTTPProvider(RPC_URL))
 
-
 def get_pool(tokenA, tokenB):
     factory = w3.eth.contract(address=Web3.to_checksum_address(FACTORY_V3), abi=FACTORY_ABI)
     try:
@@ -59,48 +58,43 @@ def get_pool(tokenA, tokenB):
         print(f"Błąd pobierania adresu puli: {e}")
         return None
 
-
 def invert(price):
     return 1 / price if price != 0 else 0
 
-
-def read_slot0(pool_address, invert_result=False):
+def read_slot0(pool_address):
     try:
         pool = w3.eth.contract(address=Web3.to_checksum_address(pool_address), abi=POOL_ABI)
         slot0 = pool.functions.slot0().call()
         sqrt_price = slot0[0]
         raw_price = (sqrt_price ** 2) / (2 ** 192)
-        corrected = invert(raw_price) if invert_result else raw_price
-        return corrected, sqrt_price
+        return raw_price, sqrt_price
     except Exception as e:
         print(f"Błąd odczytu slot0: {e}")
         return 0, 0
 
 output = {}
-
 DEBUG = False
 
 if DEBUG:
-    print("
-🔍 Trwa pobieranie kursów KRS...")
+    print("\n🔍 Trwa pobieranie kursów KRS...")
 
 for name, (tokenB, should_invert) in TOKEN_BS.items():
-        if DEBUG:
-        print(f"
-🔍 Szukam puli KRS / {name}...")
+    if DEBUG:
+        print(f"\n🔍 Szukam puli KRS / {name}...")
+
     pool_address = get_pool(TOKEN_A, tokenB)
     if pool_address:
-                if DEBUG:
+        if DEBUG:
             print(f"✅ Adres puli KRS / {name}: {pool_address}")
+
         price, sqrt_price = read_slot0(pool_address)
         raw_price = (sqrt_price ** 2) / (2 ** 192) if sqrt_price != 0 else 0
-                if DEBUG:
+
+        if DEBUG:
             print(f"↪ sqrtPriceX96 = {sqrt_price}")
-                if DEBUG:
             print(f"↪ obliczony kurs ≈ {price:.8f}")
-                if DEBUG:
             print(f"↪ kurs RAW = {raw_price}")
-        
+
         if name == "WETH":
             output[name] = round(invert(raw_price) * 10**-8, 8)
         elif name == "USDC":
@@ -108,7 +102,7 @@ for name, (tokenB, should_invert) in TOKEN_BS.items():
         else:
             output[name] = round(price, 4)
     else:
-                if DEBUG:
+        if DEBUG:
             print(f"❌ Nie znaleziono puli dla {name}.")
         output[name] = 0
 
