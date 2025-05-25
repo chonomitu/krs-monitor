@@ -92,7 +92,7 @@ for name, (tokenB, should_invert) in TOKEN_BS.items():
         print(f"↪ kurs RAW = {raw_price}")
         print(f"↪ odwrócony kurs = {invert(price)}")
         if name == "WETH":
-            output[name] = round(price * 10**-8, 8)
+            output[name] = round(invert(raw_price) * 10**-8, 6)
         elif name == "USDC":
             output[name] = round(raw_price * 10**12, 8)
         else:
