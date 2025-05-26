@@ -3,7 +3,7 @@ from datetime import datetime
 from web3 import Web3
 import requests
 
-DEBUG = True
+DEBUG = False
 
 # Konfiguracja
 TOKEN_A = "0x521e58970fBa0AEAF6DC9C2e994ec9e9CD71A070"  # KRS
