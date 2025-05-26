@@ -2,6 +2,8 @@ import json
 from datetime import datetime
 from web3 import Web3
 
+DEBUG = False
+
 # Ustawienia
 TOKEN_A = "0x521e58970fBa0AEAF6DC9C2e994ec9e9CD71A070"  # KRS
 TOKEN_BS = {
@@ -20,9 +22,7 @@ FACTORY_ABI = [{
         {"internalType": "uint24", "name": "fee", "type": "uint24"}
     ],
     "name": "getPool",
-    "outputs": [
-        {"internalType": "address", "name": "pool", "type": "address"}
-    ],
+    "outputs": [{"internalType": "address", "name": "pool", "type": "address"}],
     "stateMutability": "view",
     "type": "function"
 }]
@@ -40,6 +40,20 @@ POOL_ABI = [{
         {"internalType": "bool", "name": "unlocked", "type": "bool"}
     ],
     "stateMutability": "view",
+    "type": "function"
+}]
+
+ERC20_ABI = [{
+    "constant": True,
+    "inputs": [{"name": "owner", "type": "address"}],
+    "name": "balanceOf",
+    "outputs": [{"name": "balance", "type": "uint256"}],
+    "type": "function"
+}, {
+    "constant": True,
+    "inputs": [],
+    "name": "decimals",
+    "outputs": [{"name": "", "type": "uint8"}],
     "type": "function"
 }]
 
@@ -72,11 +86,22 @@ def read_slot0(pool_address):
         print(f"Błąd odczytu slot0: {e}")
         return 0, 0
 
+def get_token_balance(token_address, pool_address):
+    try:
+        token = w3.eth.contract(address=Web3.to_checksum_address(token_address), abi=ERC20_ABI)
+        raw = token.functions.balanceOf(Web3.to_checksum_address(pool_address)).call()
+        decimals = token.functions.decimals().call()
+        return raw / (10 ** decimals)
+    except Exception as e:
+        print(f"Błąd odczytu salda tokenu {token_address} w puli {pool_address}: {e}")
+        return 0
+
 output = {}
-DEBUG = False
 
 if DEBUG:
     print("\n🔍 Trwa pobieranie kursów KRS...")
+
+pools = {}
 
 for name, (tokenB, should_invert) in TOKEN_BS.items():
     if DEBUG:
@@ -84,33 +109,45 @@ for name, (tokenB, should_invert) in TOKEN_BS.items():
 
     pool_address = get_pool(TOKEN_A, tokenB)
     if pool_address:
+        pools[name] = pool_address
         if DEBUG:
-            print(f"✅ Adres puli KRS / {name}: {pool_address}")
-
+            print(f"✅ Adres puli: {pool_address}")
         price, sqrt_price = read_slot0(pool_address)
         raw_price = (sqrt_price ** 2) / (2 ** 192) if sqrt_price != 0 else 0
 
         if DEBUG:
             print(f"↪ sqrtPriceX96 = {sqrt_price}")
-            print(f"↪ obliczony kurs ≈ {price:.8f}")
             print(f"↪ kurs RAW = {raw_price}")
 
         if name == "WETH":
             output[name] = round(invert(raw_price) * 10**-8, 8)
         elif name == "USDC":
             output[name] = round(raw_price * 10**12, 8)
-        else:
-            output[name] = round(price, 4)
     else:
-        if DEBUG:
-            print(f"❌ Nie znaleziono puli dla {name}.")
         output[name] = 0
 
-# Zapis do pliku JSON
+# Dodaj saldo tokenów w pulach
+output["pool"] = {
+    "krs_usdc": get_token_balance(TOKEN_A, pools.get("USDC", "")),
+    "usdc": get_token_balance(TOKEN_BS["USDC"][0], pools.get("USDC", "")),
+    "krs_weth": get_token_balance(TOKEN_A, pools.get("WETH", "")),
+    "weth": get_token_balance(TOKEN_BS["WETH"][0], pools.get("WETH", ""))
+}
+
+if DEBUG:
+    print("\n📊 Kursy końcowe:")
+    for k, v in output.items():
+        if k == "pool": continue
+        print(f"{k}: {v}")
+    print("\n🧪 Pula tokenów:")
+    for k, v in output["pool"].items():
+        print(f"{k}: {v}")
+
+# Zapis do kursy.json
 with open("kursy.json", "w") as f:
     json.dump(output, f, indent=2)
 
-# Zapis do kursy_doba.json z timestampem
+# Logowanie do kursy_doba.json
 now = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
 try:
     with open("kursy_doba.json", "r") as f:
@@ -123,7 +160,3 @@ log = log[-144:]
 
 with open("kursy_doba.json", "w") as f:
     json.dump(log, f, indent=2)
-
-print("\n📊 Kursy końcowe:")
-for name, val in output.items():
-    print(f"{name}: {val} PLN")
