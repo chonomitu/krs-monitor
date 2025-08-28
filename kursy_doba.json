@@ -1279,5 +1279,26 @@
     },
     "ETHPLN": 16509.69,
     "ETHUSD": 4519.27
+  },
+  {
+    "timestamp": "2025-08-28 16:51:29",
+    "USDC": 0.24925307,
+    "WETH": 5.4751669e-05,
+    "WETH_viaUSDC": 5.5243483e-05,
+    "diff_pct": 0.008942,
+    "prefer": "viaUSDC",
+    "pool": {
+      "address_usdc": "0xca71156bFe3bBecb281B78BF8bd9C083D1db222b",
+      "address_weth": "0x4F4F6a4f5A28420B57A49Fe5cc935b441BB52456",
+      "krs_usdc": 2157.0586211488903,
+      "usdc": 468.001133,
+      "krs_weth": 452.68200761556056,
+      "weth": 0.025946511727071856,
+      "value_usd": 1235.56,
+      "value_eth": 0.273844,
+      "value_pln": 4511.09
+    },
+    "ETHPLN": 16473.22,
+    "ETHUSD": 4511.9
   }
 ]
