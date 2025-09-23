@@ -1,8 +1,8 @@
 {
   "USDC": 0.25076377,
   "WETH": 6.0024955e-05,
-  "WETH_viaUSDC": 6.0062459e-05,
-  "diff_pct": 0.000625,
+  "WETH_viaUSDC": 6.0036862e-05,
+  "diff_pct": 0.000198,
   "prefer": "viaUSDC",
   "pool": {
     "address_usdc": "0xca71156bFe3bBecb281B78BF8bd9C083D1db222b",
@@ -11,10 +11,10 @@
     "usdc": 546.387449,
     "krs_weth": 502.47228221947495,
     "weth": 0.04625405436656689,
-    "value_usd": 1328.65,
-    "value_eth": 0.318237,
-    "value_pln": 4792.67
+    "value_usd": 1328.74,
+    "value_eth": 0.318121,
+    "value_pln": 4792.03
   },
-  "ETHPLN": 15060.06,
-  "ETHUSD": 4175.05
+  "ETHPLN": 15063.54,
+  "ETHUSD": 4176.83
 }
