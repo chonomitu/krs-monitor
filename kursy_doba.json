@@ -1,26 +1,5 @@
 [
   {
-    "timestamp": "2026-01-25 18:31:04",
-    "USDC": 0.24816071,
-    "WETH": 8.6145839e-05,
-    "WETH_viaUSDC": 8.701928e-05,
-    "diff_pct": 0.010088,
-    "prefer": "viaUSDC",
-    "pool": {
-      "address_usdc": "0xca71156bFe3bBecb281B78BF8bd9C083D1db222b",
-      "address_weth": "0x4F4F6a4f5A28420B57A49Fe5cc935b441BB52456",
-      "krs_usdc": 2451.340810492646,
-      "usdc": 428.316718,
-      "krs_weth": 3014.1285676544253,
-      "weth": 0.5520543863923834,
-      "value_usd": 3358.97,
-      "value_eth": 1.177848,
-      "value_pln": 11943.82
-    },
-    "ETHPLN": 10140.38,
-    "ETHUSD": 2851.79
-  },
-  {
     "timestamp": "2026-01-25 18:55:59",
     "USDC": 0.24786031,
     "WETH": 8.6706205e-05,
@@ -3022,5 +3001,26 @@
     },
     "ETHPLN": 10388.15,
     "ETHUSD": 2958.33
+  },
+  {
+    "timestamp": "2026-01-29 08:40:15",
+    "USDC": 0.24918693,
+    "WETH": 8.4320324e-05,
+    "WETH_viaUSDC": 8.4356335e-05,
+    "diff_pct": 0.000427,
+    "prefer": "viaUSDC",
+    "pool": {
+      "address_usdc": "0xca71156bFe3bBecb281B78BF8bd9C083D1db222b",
+      "address_weth": "0x4F4F6a4f5A28420B57A49Fe5cc935b441BB52456",
+      "krs_usdc": 2239.887423678631,
+      "usdc": 481.927884,
+      "krs_weth": 3225.5819544684405,
+      "weth": 0.5343844829418385,
+      "value_usd": 3422.41,
+      "value_eth": 1.158577,
+      "value_pln": 12012.67
+    },
+    "ETHPLN": 10368.47,
+    "ETHUSD": 2953.98
   }
 ]
